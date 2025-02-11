@@ -1,6 +1,5 @@
 import express, { Application, Request, Response } from 'express';
 import cors from 'cors';
-import { ProcessController } from './controllers/processController';
 
 class App {
   public app: Application;
@@ -20,9 +19,6 @@ class App {
     this.app.get('/api/health', (req: Request, res: Response) => {
       res.json({ status: 'API funcionando!' });
     });
-
-    const processController = new ProcessController();
-    this.app.use('/api/processes', processController.router);
   }
 }
 
