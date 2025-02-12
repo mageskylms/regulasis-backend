@@ -3,90 +3,94 @@ import { Empresa } from "../types/Empresa";
 
 export class EmpresaModel {
 
+  // Método para obter todas as empresas
   public async getAll(): Promise<Empresa[]> {
     const db = await connectDB();
     return db.all<Empresa[]>("SELECT * FROM empresas");
   }
 
+  // Método para obter uma empresa por ID
   public async getById(id: number): Promise<Empresa | null> {
     const db = await connectDB();
     const empresa = await db.get<Empresa>("SELECT * FROM empresas WHERE id = ?", [id]);
     return empresa || null;
   }
 
+  // Método para criar uma nova empresa
   public async create(empresa: Empresa): Promise<void> {
     const db = await connectDB();
-    const atributos = empresa.getAttributes();
 
     await db.run(
       `INSERT INTO empresas (
         nome, 
-        nomeFantasia, 
-        cnpk, 
+        nome_fantasia, 
+        cnpj, 
         setor, 
-        enderecoSede, 
-        nomeResponsavel, 
-        contatoResponsavel, 
-        emailResponsavel, 
+        endereco_sede, 
+        nome_responsavel, 
+        contato_responsavel, 
+        email_responsavel, 
         observacoes, 
         tipo, 
         id_empresa_sede
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
-        atributos.id,
-        atributos.nome,
-        atributos.nomeFantasia,
-        atributos.cnpj,
-        atributos.setor,
-        atributos.enderecoSede,
-        atributos.nomeResponsavel,
-        atributos.contatoResponsavel,
-        atributos.emailResponsavel,
-        atributos.observacoes,
-        atributos.tipo,
-        atributos.idEmpresaSede || null
+        empresa.getNome(),
+        empresa.getNomeFantasia(),
+        empresa.getCnpj(),
+        empresa.getSetor(),
+        empresa.getEnderecoSede(),
+        empresa.getNomeResponsavel(),
+        empresa.getContatoResponsavel(),
+        empresa.getEmailResponsavel(),
+        empresa.getObservacoes(),
+        empresa.getTipo(),
+        empresa.getIdEmpresaSede() || null
       ]
     );
   }
 
+  // Método para atualizar uma empresa
   public async update(id: number, empresa: Empresa): Promise<void> {
     const db = await connectDB();
-    const atributos = empresa.getAttributes();
+
     await db.run(
       `UPDATE empresas SET
         nome = ?,
-        nomeFantasia = ?,
-        cnpk = ?,
+        nome_fantasia = ?,
+        cnpj = ?,
         setor = ?,
-        enderecoSede = ?,
-        nomeResponsavel = ?,
-        contatoResponsavel = ?,
-        emailResponsavel = ?,
+        endereco_sede = ?,
+        nome_responsavel = ?,
+        contato_responsavel = ?,
+        email_responsavel = ?,
         observacoes = ?,
         tipo = ?,
         id_empresa_sede = ?
-      WHERE id = ?`,
+        WHERE id = ?`,
       [
-        atributos.id,
-        atributos.nome,
-        atributos.nomeFantasia,
-        atributos.cnpj,
-        atributos.setor,
-        atributos.enderecoSede,
-        atributos.nomeResponsavel,
-        atributos.contatoResponsavel,
-        atributos.emailResponsavel,
-        atributos.observacoes,
-        atributos.tipo,
-        atributos.idEmpresaSede || null
+        empresa.getNome(),
+        empresa.getNomeFantasia(),
+        empresa.getCnpj(),
+        empresa.getSetor(),
+        empresa.getEnderecoSede(),
+        empresa.getNomeResponsavel(),
+        empresa.getContatoResponsavel(),
+        empresa.getEmailResponsavel(),
+        empresa.getObservacoes(),
+        empresa.getTipo(),
+        empresa.getIdEmpresaSede() || null,
+        empresa.getId()
       ]
     );
   }
 
+  // Método para deletar uma empresa por ID
   public async deleteById(id: number): Promise<void> {
     const db = await connectDB();
     await db.run("DELETE FROM empresas WHERE id = ?", [id]);
   }
 }
 
+// Exportando uma instância do modelo para uso
 export default new EmpresaModel();
