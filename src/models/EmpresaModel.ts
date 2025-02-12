@@ -2,7 +2,7 @@ import connectDB from "../config/DataBase";
 import { Empresa } from "../types/Empresa";
 
 export class EmpresaModel {
-  
+
   public async getAll(): Promise<Empresa[]> {
     const db = await connectDB();
     return db.all<Empresa[]>("SELECT * FROM empresas");

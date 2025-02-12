@@ -12,5 +12,6 @@ export interface EmpresaAttributes {
     observacoes: string;
     tipo: string;
     idEmpresaSede: number;
+
   }
   
