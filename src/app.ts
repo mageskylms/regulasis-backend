@@ -1,6 +1,7 @@
 import express, { Application, Request, Response } from 'express';
-import cors from 'cors'; // Importando as rotas da empresa
+import cors from 'cors';
 import EmpresaRoutes from './routes/EmpresaRoutes';
+import ProcessoRoutes from './routes/ProcessoRoutes';
 
 class App {
   public app: Application;
@@ -13,17 +14,17 @@ class App {
 
   private middlewares(): void {
     this.app.use(cors());
-    this.app.use(express.json()); // Para conseguir ler o corpo das requisições em JSON
+    this.app.use(express.json());
   }
 
   private routes(): void {
-    // Rota de health check
-    this.app.get('/api/health', (req: Request, res: Response) => {
+
+    this.app.get('/api/', (req: Request, res: Response) => {
       res.json({ status: 'API funcionando!' });
     });
 
-    // Registrando as rotas da empresa
-    this.app.use('/api', EmpresaRoutes); // A base das rotas será /api (por exemplo, /api/empresas)
+    this.app.use('/api', EmpresaRoutes); 
+    this.app.use('/api', ProcessoRoutes); 
   }
 }
 

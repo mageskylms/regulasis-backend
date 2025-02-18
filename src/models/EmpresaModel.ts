@@ -9,6 +9,11 @@ export class EmpresaModel {
     return db.all<Empresa[]>("SELECT * FROM empresas");
   }
 
+  public async getByIdEmpresaSede(id: number): Promise<Empresa[]> {
+    const db = await connectDB();
+    return db.all<Empresa[]>("SELECT * FROM empresas WHERE id_empresa_sede = ?", [id]);
+  }
+
   // Método para obter uma empresa por ID
   public async getById(id: number): Promise<Empresa | null> {
     const db = await connectDB();

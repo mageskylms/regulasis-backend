@@ -13,6 +13,10 @@ class EmpresaService {
         return await EmpresaModel.getById(id);
     }
 
+    public async getByIdEmpresaSede(id: number): Promise<Empresa[] | null> {
+        return await EmpresaModel.getByIdEmpresaSede(id);
+    }
+
     // Método para criar uma nova empresa
     public async createEmpresa(empresa: Empresa): Promise<void> {
         await EmpresaModel.create(empresa);

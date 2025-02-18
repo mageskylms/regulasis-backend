@@ -28,6 +28,21 @@ class EmpresaController {
         }
     }
 
+    public async getByIdEmpresaSede(req: Request, res: Response): Promise<Response> {
+        try {
+            const { id } = req.params;
+            const empresas = await EmpresaService.getByIdEmpresaSede(Number(id));
+            
+            if (!empresas || empresas.length === 0) {
+                return res.status(404).json({ message: "Nenhuma empresa encontrada" });
+            }
+            
+            return res.status(200).json(empresas);  // Retorna o array de empresas
+        } catch (error: any) {
+            return res.status(500).json({ error: error.message });
+        }
+    }    
+
     public async create(req: Request, res: Response): Promise<Response> {
         try {
             

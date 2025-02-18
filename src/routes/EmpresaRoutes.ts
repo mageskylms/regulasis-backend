@@ -12,6 +12,7 @@ class EmpresaRoutes {
     private initializeRoutes() {
         this.router.get("/empresas", this.handleRequest(EmpresaController.getAll));
         this.router.get("/empresas/:id", this.handleRequest(EmpresaController.getById));
+        this.router.get("/filiais/:id", this.handleRequest(EmpresaController.getByIdEmpresaSede));
         this.router.post("/empresas", this.handleRequest(EmpresaController.create));
         this.router.put("/empresas/:id", this.handleRequest(EmpresaController.update));
         this.router.delete("/empresas/:id", this.handleRequest(EmpresaController.delete));
