@@ -52,7 +52,7 @@ class ProcessoController {
                 return res.status(404).json({ message: "Processo não encontrado" });
             }
 
-            return res.status(200).json({ message: "Emp" });
+            return res.status(200).json({ message: "Processo criado com sucesso!" });
         } catch (error: any) {
             return res.status(500).json({ error: error.message });
         }

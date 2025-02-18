@@ -4,7 +4,7 @@ import { Processo } from "../types/Processo";
 export class ProcessoModel {
 
     private inserTo: string = "INSERT INTO processos(nome, tipo, descricao, status, data_inicio, data_prazo,id_empresa, id_usuario) VALUES (?,?,?,?,?,?,?,?)";
-    private updateSet: string = "UPDATE processos SET nome = ?, tipo = ? , descricao = ?, status = ?, data_inicio = ?, data_prazo = ?,id_empresa = ?, id_usuario = ?) WHERE id = ?";
+    private updateSet: string = "UPDATE processos SET nome = ?, tipo = ? , descricao = ?, status = ?, data_inicio = ?, data_prazo = ?,id_empresa = ?, id_usuario = ? WHERE id = ?";
     private selectIdEmpresa: string = "SELECT * FROM processos WHERE id_empresa = ?";
     private selectIdUsuario: string = "SELECT * FROM processos WHERE id_usuario = ?";
     private selectAll: string = "SELECT * FROM processos";

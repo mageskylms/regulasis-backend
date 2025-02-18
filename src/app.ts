@@ -2,6 +2,7 @@ import express, { Application, Request, Response } from 'express';
 import cors from 'cors';
 import EmpresaRoutes from './routes/EmpresaRoutes';
 import ProcessoRoutes from './routes/ProcessoRoutes';
+import UsuarioRoutes from './routes/UsuarioRoutes';
 
 class App {
   public app: Application;
@@ -25,6 +26,7 @@ class App {
 
     this.app.use('/api', EmpresaRoutes); 
     this.app.use('/api', ProcessoRoutes); 
+    this.app.use('/api', UsuarioRoutes); 
   }
 }
 
