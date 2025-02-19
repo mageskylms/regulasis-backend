@@ -28,7 +28,8 @@ class LoginController {
             }
 
             // 3. Gerar o token de autenticação
-            const token = jwt.sign({ userId: usuario.getId() }, SECRET_KEY, { expiresIn: '4h' });
+            const token = jwt.sign({ userId: usuario.getId(), role: usuario.getRegra() }, SECRET_KEY, { expiresIn: '4h' });
+            console.log("Token Payload", { userId: usuario.getId(), role: usuario.getRegra() });
             return res.status(200).json({ token });
 
 
