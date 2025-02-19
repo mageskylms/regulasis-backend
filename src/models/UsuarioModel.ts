@@ -1,10 +1,11 @@
 import connectDB from "../config/DataBase";
 import { Usuario } from "../types/Usuario";
+import bcrypt from 'bcryptjs';
 
 export class UsuarioModel {
-    private inserTo: string = "INSERT INTO usuarios(nome, contato, regra, email, password) VALUES (?,?,?,?,?)";
+    private inserTo: string = "INSERT INTO usuarios(nome, contato, regra, email, user, password) VALUES (?,?,?,?,?,?)";
     private updateSet: string = "UPDATE usuarios SET nome = ?, contato = ? , regra = ?, email = ?, password = ? WHERE id = ?";
-    private selectEmail: string = "SELECT * FROM usuarios WHERE email = ?";
+    private selectUser: string = "SELECT * FROM usuarios WHERE user = ?";
     private selectRegra: string = "SELECT * FROM usuarios WHERE regra = ?";
     private selectAll: string = "SELECT * FROM usuarios";
     private selectId: string = "SELECT * FROM usuarios WHERE id= ?";
@@ -15,9 +16,10 @@ export class UsuarioModel {
         return db.all<Usuario[]>(this.selectAll);
     }
 
-    public async getByEmail(email: string): Promise<Usuario> {
+    public async getByUser(user: string): Promise<Usuario | null> {
         const db = await connectDB();
-        return db.all<Usuario>(this.selectEmail, [email]);
+        const usuario = await db.get<Usuario>(this.selectUser, [user]);
+        return usuario || null;
     }
 
     public async getByRegra(regra: string): Promise<Usuario[]> {
@@ -39,13 +41,18 @@ export class UsuarioModel {
     public async create(usuario: Usuario): Promise<void> {
         const db = await connectDB();
 
+        // Criptografando a senha
+        const salt = bcrypt.genSaltSync(10);
+        const hashedPassword = bcrypt.hashSync(usuario.getPassword(), salt);
+
         await db.run(this.inserTo,
             [
                 usuario.getNome(),
                 usuario.getContato(),
                 usuario.getRegra(),
                 usuario.getEmail(),
-                usuario.getPassword()
+                usuario.getUser(),
+                hashedPassword
             ]
         );
     }
@@ -59,7 +66,8 @@ export class UsuarioModel {
                 usuario.getContato(),
                 usuario.getRegra(),
                 usuario.getEmail(),
-                usuario.getPassword()
+                usuario.getPassword(),
+                usuario.getUser()
             ]
         );
     }

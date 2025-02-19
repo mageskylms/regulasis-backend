@@ -2,6 +2,7 @@ export class Usuario {
     protected id: number;
     protected nome: string;
     protected email: string;
+    protected user: string;
     protected password: string;
     protected regra: string;
     protected contato: string;
@@ -10,6 +11,7 @@ export class Usuario {
         id: number,
         nome: string,
         email: string,
+        user: string,
         password: string,
         regra: string,
         contato: string
@@ -17,6 +19,7 @@ export class Usuario {
         this.id = id;
         this.nome = nome;
         this.email = email;
+        this.user = user;
         this.password = password;
         this.regra = regra;
         this.contato = contato;
@@ -32,6 +35,10 @@ export class Usuario {
 
     getEmail(): string {
         return this.email;
+    }
+
+    getUser(): string {
+        return this.user;
     }
 
     getPassword(): string {
@@ -58,6 +65,10 @@ export class Usuario {
         this.email = email;
     }
 
+    setUser(user: string): void {
+        this.user = user;
+    }
+
     setPassword(password: string): void {
         this.password = password;
     }
@@ -79,6 +90,7 @@ export class Usuario {
             json.id,
             json.nome,
             json.email,
+            json.user,
             json.password,
             json.regra,
             json.contato
