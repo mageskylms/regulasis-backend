@@ -1,5 +1,6 @@
 import { Router } from "express";
 import EmpresaController from "../controllers/EmpresaController";
+import { verifyToken, authorize } from "../middlewares/authMiddleware";
 
 class EmpresaRoutes {
     public router: Router;
@@ -10,12 +11,12 @@ class EmpresaRoutes {
     }
 
     private initializeRoutes() {
-        this.router.get("/empresas", this.handleRequest(EmpresaController.getAll));
-        this.router.get("/empresas/:id", this.handleRequest(EmpresaController.getById));
-        this.router.get("/empresas/filiais/:id", this.handleRequest(EmpresaController.getByIdEmpresaSede));
-        this.router.post("/empresas/create", this.handleRequest(EmpresaController.create));
-        this.router.put("/empresas/up/:id", this.handleRequest(EmpresaController.update));
-        this.router.delete("/empresas/del/:id", this.handleRequest(EmpresaController.delete));
+        this.router.get("/empresas", verifyToken, authorize(),this.handleRequest(EmpresaController.getAll));
+        this.router.get("/empresas/:id", verifyToken, authorize(), this.handleRequest(EmpresaController.getById));
+        this.router.get("/empresas/:id/filiais", verifyToken, authorize(), this.handleRequest(EmpresaController.getByIdEmpresaSede));
+        this.router.post("/empresas", verifyToken, authorize(), this.handleRequest(EmpresaController.create));
+        this.router.put("/empresas/:id", verifyToken, authorize(), this.handleRequest(EmpresaController.update));
+        this.router.delete("/empresas/:id", verifyToken, authorize(), this.handleRequest(EmpresaController.delete));
     }
 
     private handleRequest(controllerMethod: Function) {

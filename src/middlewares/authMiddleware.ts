@@ -9,7 +9,7 @@ const SECRET_KEY = "chave_secreta_do_regulasis";
 export const verifyToken = (req: Request, res: Response, next: NextFunction): void => {
     const token = req.header("Authorization")?.replace("Bearer ", "");
 
-    console.log("Token recebido:", token);
+    console.log("Token recebido:", token); //retirar quando os testes estiverem ok!
 
     if (!token) {
         return next(new Error("Acesso não autorizado. Token ausente.")); // Chama next com um erro
@@ -17,33 +17,49 @@ export const verifyToken = (req: Request, res: Response, next: NextFunction): vo
     try {
         const decoded = jwt.verify(token, SECRET_KEY) as JwtPayload;
         req.user = decoded;
-        next(); // Chama next para prosseguir
+        next();
     } catch (error) {
-        return next(new Error("Token inválido ou expirado.")); // Chama next com um erro
+        return next(new Error("Token inválido ou expirado."));
     }
 };
 
 export const authorize = () => {
     return (req: Request, res: Response, next: NextFunction): void => {
-        console.log("User role:", req.user?.role);  // Aqui você verifica o conteúdo de req.user
         const userRole = req.user?.role;
+        console.log("User role:", userRole);  // Aqui você verifica o conteúdo de req.user - retirar quando ok!
         const routePath = req.route.path;
+        const method = req.method;
 
         if (!userRole) {
-            // Envia uma resposta de erro sem retornar nada explicitamente
+            // Envia uma resposta de erro sem retornar nada explicitamente - tirar quando ok!
             res.status(403).json({ message: "Papel do usuário não definido." });
-            return; // Fazemos um return aqui, mas não estamos retornando nada para o TypeScript
+            return; // Fazemos um return aqui, mas não estamos retornando nada para o TypeScript - tirar quando ok
         }
 
-        // Verificando se a rota está configurada em `permissions`
-        if (!(routePath in permissions)) {
+
+        // // Verificando se a rota está configurada em `permissions` - tirar quando ok
+        // if (!(routePath in permissions)) {
+        //     res.status(403).json({ message: "Acesso negado. Rota não configurada em permissions." });
+        //     return; // Retorna sem devolver nada - tirar quando ok
+        // }
+
+        const routePermissions = permissions[routePath as keyof typeof permissions];
+
+        if (!routePermissions) {
             res.status(403).json({ message: "Acesso negado. Rota não configurada em permissions." });
-            return; // Retorna sem devolver nada
+            return;
         }
 
-        const allowedRoles = permissions[routePath as keyof typeof permissions];
+        //const allowedRoles = permissions[routePath as keyof typeof permissions];
 
-        if (!allowedRoles.includes(userRole)) {
+        const allowedRoles = routePermissions[method as keyof typeof routePermissions];
+
+        if (!allowedRoles) {
+            res.status(403).json({ message: "Método não permitido para essa rota" });
+            return;
+        }
+
+        if (!allowedRoles.includes(userRole)) { 
             res.status(403).json({ message: "Acesso negado. Permissão insuficiente." });
             return; // Retorna sem devolver nada
         }
