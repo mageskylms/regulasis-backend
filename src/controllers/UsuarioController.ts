@@ -75,7 +75,8 @@ class UsuarioConstroller {
     public async update(req: Request, res: Response): Promise<Response> {
         try {
             const { id } = req.params;
-            const usuario: Usuario = req.body;
+            const userData = req.body;
+            const usuario = Usuario.fromJSON(userData);
             await UsuarioService.update(Number(id), usuario);
             return res.status(200).json({ message: "Usuário atualizado com sucesso" });
         } catch (error: any) {

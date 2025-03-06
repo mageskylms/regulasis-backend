@@ -13,24 +13,23 @@ class LoginController {
         const { user, password } = req.body;
 
         try {
-            // 1. Buscar o usuário no banco
-            const usuario = Usuario.fromJSON(await UsuarioService.getByUser(user));
 
-            if (!usuario) {
+            const usuarioDB = await UsuarioService.getByUser(user);
+
+            if (!usuarioDB) {
                 return res.status(400).json({ message: "Credenciais inválidas." });
             }
 
-            // 2. Verificar se a senha está correta
+            const usuario = Usuario.fromJSON(usuarioDB);
+
             const isPasswordValid = await bcrypt.compare(password, usuario.getPassword());
 
             if (!isPasswordValid) {
                 return res.status(400).json({ message: "Credenciais inválidas." });
             }
 
-            // 3. Gerar o token de autenticação
-            const token = jwt.sign({ user: usuario.getUser(), role: usuario.getRegra() }, SECRET_KEY, { expiresIn: '4h' });
-            return res.status(200).json({ token });
-
+            const token = jwt.sign({ userName: usuario.getUser(), role: usuario.getRegra() }, SECRET_KEY, { expiresIn: '4h' });
+            return res.status(200).json({ token, userName: usuario.getNome() });
 
         } catch (error) {
             console.error(error);

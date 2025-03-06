@@ -85,7 +85,7 @@ export class EmpresaModel {
         empresa.getObservacoes(),
         empresa.getTipo(),
         empresa.getIdEmpresaSede() || null,
-        empresa.getId()
+        id
       ]
     );
   }

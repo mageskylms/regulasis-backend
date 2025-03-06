@@ -71,7 +71,8 @@ class ProcessoController {
     public async update(req: Request, res: Response): Promise<Response> {
         try {
             const { id } = req.params;
-            const processo: Processo = req.body;
+            const processoData = req.body;
+            const processo = Processo.fromJSON(processoData);   
             await ProcessoService.update(Number(id), processo);
             return res.status(200).json({ message: "Processo atualizado com sucesso" });
         } catch (error: any) {

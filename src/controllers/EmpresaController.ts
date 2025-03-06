@@ -9,6 +9,7 @@ class EmpresaController {
             const empresas = await EmpresaService.getAll();
             return res.status(200).json(empresas);
         } catch (error: any) {
+            console.error('Erro ao obter todas as empresas:', error);
             return res.status(500).json({ error: error.message });
         }
     }
@@ -24,6 +25,7 @@ class EmpresaController {
             
             return res.status(200).json(empresa);
         } catch (error: any) {
+            console.error('Erro ao obter empresa', error);
             return res.status(500).json({ error: error.message });
         }
     }
@@ -39,6 +41,7 @@ class EmpresaController {
             
             return res.status(200).json(empresas);  // Retorna o array de empresas
         } catch (error: any) {
+            console.error('Erro ao obter empresa sede', error);
             return res.status(500).json({ error: error.message });
         }
     }    
@@ -52,6 +55,7 @@ class EmpresaController {
             await EmpresaService.createEmpresa(empresa);
             return res.status(201).json({ message: "Empresa criada com sucesso" });
         } catch (error: any) {
+            console.error('Erro ao criar empresa', error);
             return res.status(400).json({ error: error.message });
         }
     }
@@ -59,10 +63,12 @@ class EmpresaController {
     public async update(req: Request, res: Response): Promise<Response> {
         try {
             const { id } = req.params;
-            const empresa: Empresa = req.body;
+            const empresaData = req.body;
+            const empresa = Empresa.fromJSON(empresaData);
             await EmpresaService.update(Number(id), empresa);
             return res.status(200).json({ message: "Empresa atualizada com sucesso" });
         } catch (error: any) {
+            console.error('Erro ao editar empresa.', error);
             return res.status(400).json({ error: error.message });
         }
     }
@@ -73,6 +79,7 @@ class EmpresaController {
             await EmpresaService.deleteById(Number(id));
             return res.status(200).json({ message: "Empresa excluída com sucesso" });
         } catch (error: any) {
+            console.error('Erro ao deletar empresa', error);
             return res.status(500).json({ error: error.message });
         }
     }
