@@ -17,9 +17,9 @@
   },
   "name": "regulasis-backend",
   "version": "1.0.0",
-  "main": "dist/app.js",
+  "main": "index.js",
   "scripts": {
-    "start": "node dist/app.js",
+    "start": "cross-env TZ=America/Sao_Paulo node dist/app.js",
     "dev": "nodemon src/server.ts"
   },
   "repository": {
