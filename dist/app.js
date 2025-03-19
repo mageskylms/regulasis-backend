@@ -34,5 +34,10 @@ class App {
         });
     }
 }
+// const appInstance = new App();
+// appInstance.app.listen(3000, () => console.log('Servidor rodando'));
+const port = process.env.PORT || 3000;
 const appInstance = new App();
-appInstance.app.listen(3000, () => console.log('Servidor rodando na porta 3000'));
+appInstance.app.listen(port, () => {
+    console.log(`Servidor rodando na porta ${port}`);
+});
